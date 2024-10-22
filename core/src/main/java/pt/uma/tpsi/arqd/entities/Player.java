@@ -28,15 +28,12 @@ public class Player {
     private void handleInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             posX -= 5;
+            if (posX < 0) posX = 0;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             posX += 5;
+            if (posX > Gdx.graphics.getWidth()) posX = Gdx.graphics.getWidth();
+            }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            posY += 5;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            posY -= 5;
-        }
+
     }
-}
