@@ -12,16 +12,13 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private BackgroundManagement backgroundManagement;
     private Player player;
-
     @Override
     public void create() {
         Gdx.graphics.setWindowedMode(1280, 800);
         batch = new SpriteBatch();
         backgroundManagement = new BackgroundManagement(batch);
-        player = new Player(batch);
+        player = new Player(batch, 100,20);
         player.create();
-
-
     }
 
     @Override
@@ -29,14 +26,11 @@ public class Main extends ApplicationAdapter {
 
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         backgroundManagement.render();
         player.render();
-
-
+        BitmapFont.drawText(10,750,"Choupana!",batch);
         batch.end();
-
     }
 
     @Override
