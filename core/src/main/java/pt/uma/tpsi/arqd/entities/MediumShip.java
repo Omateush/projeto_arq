@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-class SmallShip {
+class MediumShip {
     private float x, y, width, height;
     private Texture texture;
     private Rectangle boundingBox;
 
-    public SmallShip(float x, float width, float height) {
+    public MediumShip(float x, float width, float height) {
         this.x = x;
         this.width = width;
         this.height = height;
         this.y = Gdx.graphics.getHeight() - height; // Coloca a nave no topo da tela
 
-        // Carrega a textura da nave pequena
-        texture = new Texture("enemy-small.png");
+        // Carrega a textura da nave média
+        texture = new Texture("enemy-medium.png");
 
         // Define a bounding box da nave
         boundingBox = new Rectangle(x, y, width, height);

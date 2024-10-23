@@ -17,7 +17,7 @@ public class Laser {
         this.width = width;
         this.height = height;
         this.speed = speed;
-        this.texture = new Texture("laser.png"); // Certifique-se de que a imagem está no diretório assets
+        this.texture = new Texture("laser-bolts.png"); // Certifique-se de que a imagem está no diretório assets
         this.boundingBox = new Rectangle(x, y, width, height);
     }
 
@@ -27,10 +27,9 @@ public class Laser {
     }
 
     public void render(SpriteBatch batch) {
-        batch.begin();
         batch.draw(texture, x, y, width, height);
-        batch.end();
     }
+
 
     public Rectangle getBoundingBox() {
         return boundingBox;
