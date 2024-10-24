@@ -10,19 +10,18 @@ public class EnemyShip {
     private Texture texture;
     private Rectangle boundingBox;
 
-    public EnemyShip(float x, float y, float width, float height) {
+    public EnemyShip(float x, float y, float width, float height, String texturePath) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.texture = new Texture("enemy-ship.png"); // Certifique-se de que a imagem está no diretório assets
+        this.texture = new Texture(texturePath); // Carrega a textura passada
         this.boundingBox = new Rectangle(x, y, width, height); // Define a bounding box para colisões
     }
 
     public void update(float deltaTime) {
-        // Atualiza a posição ou movimento da nave inimiga
-        // Atualiza a posição da boundingBox
-        boundingBox.setPosition(x, y);
+        // Atualiza a posição ou movimento da nave inimiga (se necessário)
+        boundingBox.setPosition(x, y); // Atualiza a posição da boundingBox
     }
 
     public void render(SpriteBatch batch) {
@@ -34,6 +33,6 @@ public class EnemyShip {
     }
 
     public void dispose() {
-        texture.dispose();
+        texture.dispose(); // Libera os recursos da textura
     }
 }

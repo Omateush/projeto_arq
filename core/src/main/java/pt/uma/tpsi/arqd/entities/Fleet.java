@@ -7,25 +7,33 @@ import java.util.Iterator;
 
 public class Fleet {
     private ArrayList<EnemyShip> enemyShips;
-    private final int maxEnemies = 15; // Número máximo de inimigos
-    private final int enemiesPerRow = 5; // Número de inimigos por fileira
-    private final float enemyWidth = 50, enemyHeight = 50; // Tamanho dos inimigos
-    private final float spacingX = 70; // Espaçamento horizontal entre os inimigos
-    private final float spacingY = 50; // Espaçamento vertical entre as fileiras
+    private final int enemiesPerRow = 10; // Número de inimigos por fileira
+    private final float enemyWidth = 50, enemyHeight = 50; // Tamanho padrão dos inimigos
+    private final float spacingX = 100; // Espaçamento horizontal entre os inimigos
+    private final float spacingY = 100; // Espaçamento vertical entre as fileiras
 
     public Fleet() {
         enemyShips = new ArrayList<>();
 
-        // Organizar os inimigos em 3 fileiras com 5 inimigos em cada
-        for (int i = 0; i < maxEnemies; i++) {
-            int row = i / enemiesPerRow; // Determina a fileira
-            int col = i % enemiesPerRow; // Determina a posição na fileira
+        // Fileira 1 - 10 inimigos grandes (enemy-big.png)
+        for (int i = 0; i < enemiesPerRow; i++) {
+            float x = i * (enemyWidth + spacingX); // Calcula a posição no eixo X
+            float y = Gdx.graphics.getHeight() - (0 * (enemyHeight + spacingY)) - 100; // Posição da primeira fileira
+            enemyShips.add(new EnemyShip(x, y, enemyWidth, enemyHeight, "enemy-big.png"));
+        }
 
-            float x = col * (enemyWidth + spacingX); // Calcula a posição no eixo X
-            float y = Gdx.graphics.getHeight() - (row * (enemyHeight + spacingY)) - 100; // Calcula a posição no eixo Y
+        // Fileira 2 - 10 inimigos médios (enemy-medium.png)
+        for (int i = 0; i < enemiesPerRow; i++) {
+            float x = i * (enemyWidth + spacingX); // Calcula a posição no eixo X
+            float y = Gdx.graphics.getHeight() - (1 * (enemyHeight + spacingY)) - 100; // Posição da segunda fileira
+            enemyShips.add(new EnemyShip(x, y, enemyWidth, enemyHeight, "enemy-medium.png"));
+        }
 
-            // Adiciona um inimigo na posição calculada
-            enemyShips.add(new EnemyShip(x, y, enemyWidth, enemyHeight));
+        // Fileira 3 - 10 inimigos pequenos (enemy-small.png)
+        for (int i = 0; i < enemiesPerRow; i++) {
+            float x = i * (enemyWidth + spacingX); // Calcula a posição no eixo X
+            float y = Gdx.graphics.getHeight() - (2 * (enemyHeight + spacingY)) - 100; // Posição da terceira fileira
+            enemyShips.add(new EnemyShip(x, y, enemyWidth, enemyHeight, "enemy-small.png"));
         }
     }
 
