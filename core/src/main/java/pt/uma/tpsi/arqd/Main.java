@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin(); // Inicia o batch uma vez
+        batch.begin();
 
         // Renderizar o fundo
         backgroundManagement.render();
@@ -44,15 +44,14 @@ public class Main extends ApplicationAdapter {
         // Renderizar o jogador e os lasers
         player.render(batch);
 
-        // Renderizar a frota de naves inimigas
-        fleet.render(batch);
+        // Renderizar a frota de naves inimigas, passando a lista de lasers
+        fleet.render(batch, player.getLasers());
 
         // Renderizar o texto do Highscore
         font.draw(batch, "Aqui vai ficar o Highscore!", 10, 750);
 
-        batch.end(); // Finaliza o batch após renderizar tudo
+        batch.end();
     }
-
 
     @Override
     public void dispose() {

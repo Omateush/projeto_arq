@@ -68,6 +68,11 @@ public class Player {
         lasers.add(laser); // Adiciona o laser à lista de lasers disparados
     }
 
+    // Novo método getLasers() para retornar a lista de lasers
+    public ArrayList<Laser> getLasers() {
+        return lasers;
+    }
+
     public void dispose() {
         animator.dispose(); // Libera os recursos da nave
 

@@ -1,65 +1,63 @@
 package pt.uma.tpsi.arqd.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Fleet {
-    private ArrayList<SmallShip> smallShips;
-    private ArrayList<MediumShip> mediumShips;
-    private ArrayList<LargeShip> largeShips;
+    private ArrayList<EnemyShip> enemyShips;
+    private final int maxEnemies = 15; // Número máximo de inimigos
+    private final int enemiesPerRow = 5; // Número de inimigos por fileira
+    private final float enemyWidth = 50, enemyHeight = 50; // Tamanho dos inimigos
+    private final float spacingX = 70; // Espaçamento horizontal entre os inimigos
+    private final float spacingY = 50; // Espaçamento vertical entre as fileiras
 
     public Fleet() {
-        smallShips = new ArrayList<>();
-        mediumShips = new ArrayList<>();
-        largeShips = new ArrayList<>();
+        enemyShips = new ArrayList<>();
 
-        // Adiciona naves pequenas
-        for (int i = 0; i < 3; i++) {
-            float x = i * 150; // Ajusta a distância entre as naves
-            smallShips.add(new SmallShip(x, 50, 50)); // Largura e altura de 50px
+        // Organizar os inimigos em 3 fileiras com 5 inimigos em cada
+        for (int i = 0; i < maxEnemies; i++) {
+            int row = i / enemiesPerRow; // Determina a fileira
+            int col = i % enemiesPerRow; // Determina a posição na fileira
+
+            float x = col * (enemyWidth + spacingX); // Calcula a posição no eixo X
+            float y = Gdx.graphics.getHeight() - (row * (enemyHeight + spacingY)) - 100; // Calcula a posição no eixo Y
+
+            // Adiciona um inimigo na posição calculada
+            enemyShips.add(new EnemyShip(x, y, enemyWidth, enemyHeight));
         }
-
-        // Adiciona naves médias
-        for (int i = 0; i < 2; i++) {
-            float x = i * 200; // Ajusta a distância entre as naves
-            mediumShips.add(new MediumShip(x, 75, 75)); // Largura e altura de 75px
-        }
-
-        // Adiciona naves grandes
-        largeShips.add(new LargeShip(400, 100, 100)); // Adiciona uma nave grande
     }
 
-    public void render(SpriteBatch batch) {
-        // Renderiza as naves pequenas
-        for (SmallShip ship : smallShips) {
-            ship.render(batch);
-        }
+    public void render(SpriteBatch batch, ArrayList<Laser> lasers) {
+        // Verifica colisões e renderiza as naves inimigas
+        Iterator<EnemyShip> shipIterator = enemyShips.iterator();
+        while (shipIterator.hasNext()) {
+            EnemyShip enemyShip = shipIterator.next();
+            enemyShip.update(Gdx.graphics.getDeltaTime());
 
-        // Renderiza as naves médias
-        for (MediumShip ship : mediumShips) {
-            ship.render(batch);
-        }
+            // Verifica se algum laser colide com a nave inimiga
+            Iterator<Laser> laserIterator = lasers.iterator();
+            while (laserIterator.hasNext()) {
+                Laser laser = laserIterator.next();
 
-        // Renderiza as naves grandes
-        for (LargeShip ship : largeShips) {
-            ship.render(batch);
+                if (laser.getBoundingBox().overlaps(enemyShip.getBoundingBox())) {
+                    // Colisão detectada: Remove a nave e o laser
+                    shipIterator.remove();
+                    laserIterator.remove();
+                    break; // Para evitar múltiplas remoções
+                }
+            }
+
+            // Renderiza a nave inimiga
+            enemyShip.render(batch);
         }
     }
 
     public void dispose() {
-        // Libera os recursos das naves pequenas
-        for (SmallShip ship : smallShips) {
-            ship.dispose();
-        }
-
-        // Libera os recursos das naves médias
-        for (MediumShip ship : mediumShips) {
-            ship.dispose();
-        }
-
-        // Libera os recursos das naves grandes
-        for (LargeShip ship : largeShips) {
-            ship.dispose();
+        // Libera os recursos das naves
+        for (EnemyShip enemyShip : enemyShips) {
+            enemyShip.dispose();
         }
     }
 }
