@@ -7,86 +7,47 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Animator {
-
-    // Constant rows and columns of the sprite sheet
-    private int FRAME_COLS, FRAME_ROWS;
-    // Objects used
-    private Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
+    private Animation<TextureRegion> walkAnimation;
     private Texture walkSheet;
-    private SpriteBatch spriteBatch;
-    private String path;
+    private float stateTime;
+    private int frameCols, frameRows;
     private int width, height;
-    private boolean flip;
-    // A variable for tracking elapsed time for the animation
-    float stateTime;
 
-    public Animator(SpriteBatch batch, String path, int columns, int rows) {
-        this.spriteBatch = batch;
-        this.FRAME_COLS = columns;
-        this.FRAME_ROWS = rows;
-        this.path = path;
-        this.flip = false;
-    }
-
-    public Animator() {
-
-    }
-
-    public void setFlip(boolean flip) {
-        this.flip = flip;
-    }
-
-    public void create() {
-
-        // Load the sprite sheet as a Texture
+    public Animator(SpriteBatch batch, String path, int frameCols, int frameRows) {
+        this.frameCols = frameCols;
+        this.frameRows = frameRows;
         walkSheet = new Texture(Gdx.files.internal(path));
 
-        // Use the split utility method to create a 2D array of TextureRegions. This is
-        // possible because this sprite sheet contains frames of equal size and they are
-        // all aligned.
-        this.width = walkSheet.getWidth() / FRAME_COLS;
-        this.height = walkSheet.getHeight() / FRAME_ROWS;
-
-        TextureRegion[][] tmp = TextureRegion.split(walkSheet,
-                walkSheet.getWidth() / FRAME_COLS,
-                walkSheet.getHeight() / FRAME_ROWS);
-
-        // Place the regions into a 1D array in the correct order, starting from the top
-        // left, going across first. The Animation constructor requires a 1D array.
-        TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / frameCols, walkSheet.getHeight() / frameRows);
+        TextureRegion[] walkFrames = new TextureRegion[frameCols * frameRows];
         int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
+        for (int i = 0; i < frameRows; i++) {
+            for (int j = 0; j < frameCols; j++) {
                 walkFrames[index++] = tmp[i][j];
             }
         }
 
-        // Initialize the Animation with the frame interval and array of frames
-        walkAnimation = new Animation<TextureRegion>(0.095f, walkFrames);
-        // time to 0
+        walkAnimation = new Animation<>(0.1f, walkFrames);
         stateTime = 0f;
+        width = walkSheet.getWidth() / frameCols;
+        height = walkSheet.getHeight() / frameRows;
     }
 
-
-    public void render(int posX, int posY) {
-        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-        // Get current frame of animation for the current stateTime
+    public void render(SpriteBatch batch, int x, int y) {
+        stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-        //spriteBatch.draw(currentFrame, posX, posY); // Draw current frame at (50, 50)
-        spriteBatch.draw(currentFrame, flip ? posX +width : posX, posY, flip ? -width : width, height);
-    }
-
-
-    public void dispose() { // SpriteBatches and Textures must always be disposed
-        walkSheet.dispose();
-    }
-
-    public int getHeight() {
-        return height;
+        batch.draw(currentFrame, x, y);
     }
 
     public int getWidth() {
         return width;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void dispose() {
+        walkSheet.dispose();
+    }
 }

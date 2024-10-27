@@ -8,17 +8,18 @@ public class BackgroundManagement {
 
     private Texture background;
     private Sprite sprite;
-    SpriteBatch spriteBatch;
 
-    public BackgroundManagement(SpriteBatch batch) {
-        this.spriteBatch = batch;
+    public BackgroundManagement() {
         background = new Texture("space.png");
         sprite = new Sprite(background);
         sprite.setPosition(0, 0);
     }
 
-    public void render() {
-        sprite.draw(spriteBatch);
+    public void render(SpriteBatch batch) {
+        sprite.draw(batch); // Corrigido para desenhar o sprite corretamente
     }
 
+    public void dispose() {
+        background.dispose();
+    }
 }

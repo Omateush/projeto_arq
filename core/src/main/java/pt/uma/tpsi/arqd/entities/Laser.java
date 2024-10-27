@@ -17,19 +17,18 @@ public class Laser {
         this.width = width;
         this.height = height;
         this.speed = speed;
-        this.texture = new Texture("laser-bolts.png"); // Certifique-se de que a imagem está no diretório assets
+        this.texture = new Texture("laser-bolts.png");
         this.boundingBox = new Rectangle(x, y, width, height);
     }
 
     public void update() {
-        y += speed; // Atualiza a posição do laser
+        y += speed;
         boundingBox.setPosition(x, y);
     }
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, x, y, width, height);
     }
-
 
     public Rectangle getBoundingBox() {
         return boundingBox;
